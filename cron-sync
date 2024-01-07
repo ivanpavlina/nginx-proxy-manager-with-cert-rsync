@@ -1,0 +1,1 @@
+*/5 * * * * /usr/local/bin/sync-and-reload.sh >> /var/log/cron.log 2>&1
