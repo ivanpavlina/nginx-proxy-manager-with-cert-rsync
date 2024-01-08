@@ -1,13 +1,21 @@
-#!/command/with-contenv bash
+#!/command/with-contenv /bin/bash
 
 # Check if required environment variables are set
+errored=false
 REQUIRED_VARS=("SOURCE_CERT_DIR_PATH" "DEST_CERT_DIR_PATH" "SSH_KEY_PATH" "SSH_USER" "SSH_HOST")
 for var in "${REQUIRED_VARS[@]}"; do
     if [ -z "${!var}" ]; then
-        echo "[CERT_SYNC] Error: Environment variable $var is not set. Exiting."
-        exit 1
+        echo "[CERT_SYNC] Error: Environment variable $var is not set"
+        errored=true
     fi
 done
+
+if [ "$errored" = true ]; then
+    echo "[CERT_SYNC] environment check failed. Full env:"
+    printenv
+    exit 1
+fi
+
 
 PREV_CHECKSUM_FILE="/previous_cert_checksum"
 
